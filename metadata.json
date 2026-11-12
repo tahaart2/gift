@@ -1,0 +1,8 @@
+{
+  "name": "Remix 404 — Missing Piece Found",
+  "description": "A cute, whimsical mini-journey of debugging, flowers, cats, and discovering something special.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
