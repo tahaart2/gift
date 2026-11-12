@@ -9,13 +9,434 @@
     <meta property="og:description" content="A cute, whimsical mini-journey of debugging, flowers, cats, and discovering something special." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Pure CSS stylesheet -->
+    <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body class="bg-[#FFF8EF] text-[#493A3D] font-sans antialiased selection:bg-[#F8DCE8] selection:text-[#493A3D]">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body>
+    <!-- Floating Petals Background Container -->
+    <div id="petalsContainer" aria-hidden="true"></div>
+
+    <!-- Canvas for Confetti particle bursts -->
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+      <div class="navbar-container">
+        <!-- Logo / Brand -->
+        <button id="brandBtn" class="brand-btn" aria-label="Go to start: 404 Missing Piece Found">
+          <span class="brand-cat" role="img" aria-label="cat">🐱</span>
+          <span class="brand-text-long">404 · Missing Piece</span>
+          <span class="brand-text-short">404</span>
+        </button>
+
+        <!-- Step Navigation Pills -->
+        <nav class="nav-steps" aria-label="Journey steps">
+          <button class="step-btn active" data-screen="intro" aria-current="step">
+            <span class="step-long">1. Hello</span>
+            <span class="step-short">1</span>
+          </button>
+          <button class="step-btn" data-screen="memes">
+            <span class="step-long">2. Memes</span>
+            <span class="step-short">2</span>
+          </button>
+          <button class="step-btn" data-screen="research">
+            <span class="step-long">3. Results</span>
+            <span class="step-short">3</span>
+          </button>
+          <button class="step-btn" data-screen="final">
+            <span class="step-long">4. Message</span>
+            <span class="step-short">4</span>
+          </button>
+        </nav>
+
+        <!-- Right Sound & Reset Controls -->
+        <div class="nav-actions">
+          <button id="toggleSoundBtn" class="icon-btn sound-on" title="Mute soothing chimes" aria-label="Mute soothing chimes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+          </button>
+          <button id="resetBtn" class="icon-btn" title="Restart research" aria-label="Restart the research journey">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Top Progress Bar -->
+    <div class="progress-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+
+    <!-- Main Content Area with 4 Sequential Journey Screens -->
+    <main class="app-main">
+      <!-- SCREEN 1: INTRO -->
+      <section id="screen-intro" class="screen-section active">
+        <!-- Top Tag -->
+        <div class="badge badge-rose">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
+          </svg>
+          <span>Project: 404 — Missing Piece Found</span>
+          <span>🌸</span>
+        </div>
+
+        <h1 class="screen-title">
+          Hello, little human! <span class="interactive-cat" title="Purr!">🐱</span>
+        </h1>
+        <p class="screen-subtitle">
+          I have a very important scientific discovery to share with you.
+        </p>
+
+        <!-- Cat Hero Image Card -->
+        <div class="image-card-wrapper">
+          <div class="image-halo"></div>
+          <div class="image-card">
+            <img
+              src="/src/assets/images/cat_intro_flowers_1794478833523.jpg"
+              alt="Cute fluffy kitten beside a mini pastel laptop surrounded by blooming pink peonies and roses"
+            />
+            <div class="image-caption-bar">
+              <span>🌸 Researcher Cat · In the Garden Office</span>
+              <span class="status-tag">status: investigating</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Card -->
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot dot-pink"></span>
+              <span class="terminal-dot dot-lavender"></span>
+              <span class="terminal-dot dot-sage"></span>
+            </div>
+            <span class="terminal-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              research_terminal.sh
+            </span>
+          </div>
+          <div class="terminal-body">
+            <p class="term-cmd">$ starting_deep_research.exe</p>
+            <p class="term-output">Searching for missing code...</p>
+            <p class="term-output">Analyzing possible bugs...</p>
+            <p class="term-output">Running experiments...</p>
+            <p class="term-status">
+              <span class="pulse-dot"></span>
+              Research status: Almost complete.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA Button -->
+        <button id="introNextBtn" class="cta-button" aria-label="Let's see what you found">
+          <span>Let's see what you found 🌸</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </section>
+
+      <!-- SCREEN 2: MEMES -->
+      <section id="screen-memes" class="screen-section">
+        <div class="badge badge-lavender">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
+          </svg>
+          <span>Scientific Debugging Humor</span>
+          <span>🐾</span>
+        </div>
+
+        <h2 class="screen-title">
+          The Cat Meme Corner <span class="interactive-cat" title="Meow!">🐱</span>
+        </h2>
+        <p class="screen-subtitle">
+          Behind every complex codebase is a kitten wondering why line 14 refuses to run.
+        </p>
+
+        <div style="margin-bottom: 2rem;">
+          <button id="giveAnotherCatBtn" class="pill-action-btn" aria-label="Give me another cat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>Give me another cat 🐱</span>
+          </button>
+        </div>
+
+        <!-- Meme Grid -->
+        <div id="memeGrid" class="meme-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Nav Controls -->
+        <div class="btn-row">
+          <button id="memesPrevBtn" class="secondary-button" aria-label="Back to introduction">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+          </button>
+
+          <button id="memesNextBtn" class="cta-button" aria-label="Continue to Research Results">
+            <span>Continue to Research Results 🔬</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: RESEARCH & MISSING PIECE -->
+      <section id="screen-research" class="screen-section">
+        <div class="badge badge-sage">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>Investigation Phase · Complete</span>
+        </div>
+
+        <h2 class="screen-title">
+          After extensive research...
+        </h2>
+
+        <!-- Scientist Cat Image Card -->
+        <div class="image-card-wrapper">
+          <div class="image-halo"></div>
+          <div class="image-card">
+            <img
+              src="/src/assets/images/cat_scientist_glasses_1794478834869.jpg"
+              alt="Intelligent fluffy researcher kitten wearing tiny round spectacles typing on laptop with cherry blossoms"
+            />
+            <div class="image-caption-bar">
+              <span>Dr. Whiskers, Ph.D.</span>
+              <span class="status-tag">Senior Bug Detective</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Animated Terminal Card -->
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot dot-pink"></span>
+              <span class="terminal-dot dot-lavender"></span>
+              <span class="terminal-dot dot-sage"></span>
+            </div>
+            <span class="terminal-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              deep_analysis.log
+            </span>
+          </div>
+          <div id="researchTerminalLogs" class="terminal-body" style="min-height: 140px; justify-content: center;">
+            <!-- Progressive logs inserted via JS -->
+          </div>
+        </div>
+
+        <!-- Storytelling & Puzzle Box -->
+        <div class="story-card">
+          <div class="story-glow-1"></div>
+          <div class="story-glow-2"></div>
+
+          <p class="story-text-lead">
+            "I've been doing deep research to find the missing piece of my code..."
+          </p>
+          <p class="story-text-punch">
+            "And I think I finally found it."
+          </p>
+
+          <div id="puzzleInteractiveBox" class="puzzle-interactive-box" title="Click to connect">
+            <div class="puzzle-icon-wrap">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"/>
+              </svg>
+            </div>
+            <div class="puzzle-text-content">
+              <span class="puzzle-label">CLICK TO CONNECT</span>
+              <span class="puzzle-desc">Searching socket #404...</span>
+            </div>
+            <div class="puzzle-heart-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </div>
+          </div>
+
+          <p id="puzzleHintText" class="puzzle-hint">
+            Tap the puzzle piece to snap it in!
+          </p>
+        </div>
+
+        <!-- Nav Controls -->
+        <div class="btn-row">
+          <button id="researchPrevBtn" class="secondary-button" aria-label="Back to cat memes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+          </button>
+
+          <button id="researchNextBtn" class="cta-button" aria-label="Read the final message">
+            <span>Read the final message 💌</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: FINAL MESSAGE & DUA -->
+      <section id="screen-final" class="screen-section">
+        <div class="badge badge-rose">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
+          </svg>
+          <span>A Gentle Message</span>
+          <span>🌸</span>
+        </div>
+
+        <!-- Final Flowers Cat Image Card -->
+        <div class="image-card-wrapper">
+          <div class="image-halo"></div>
+          <div class="image-card">
+            <img
+              src="/src/assets/images/cat_flowers_final_1794478836081.jpg"
+              alt="Sweet smiling white kitten lovingly hugging a lush bouquet of pink roses and garden blossoms"
+            />
+            <div class="image-caption-bar">
+              <span>Warm Wishes · Garden of Peace</span>
+              <span class="status-tag">Flowers: 100%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reflections Card -->
+        <div class="reflection-card">
+          <p class="reflection-lead">
+            Maybe some things don't need complicated algorithms.
+          </p>
+          <p class="reflection-accent">
+            Sometimes, all you need is a little kindness and good intentions.
+          </p>
+        </div>
+
+        <!-- Arabic Dua Calligraphy Card -->
+        <div class="dua-card">
+          <div class="dua-corner corner-top-left" aria-hidden="true">❦</div>
+          <div class="dua-corner corner-bottom-right" aria-hidden="true">❦</div>
+
+          <div class="dua-arabic-container">
+            <p class="dua-arabic-main">
+              اللهم اجعل بيننا خيرًا، وارزقنا حسن النية، وطيب الكلام، وجميل الأثر.
+            </p>
+            <div class="dua-divider"></div>
+            <p class="dua-arabic-sub">
+              وأسأل الله أن يكتب لنا الخير أينما كان.
+            </p>
+          </div>
+
+          <div class="dua-actions-row">
+            <button id="copyDuaBtn" class="dua-action-btn" aria-label="Copy Arabic dua text">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy Dua</span>
+            </button>
+
+            <button id="sendHeartBtn" class="dua-action-btn dua-heart-btn" aria-label="Send heart blessing">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span id="blessingHeartsCount">3</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Personal Message -->
+        <div class="personal-message-card">
+          <p class="personal-message-text">
+            I just want good things between us. ❤️
+          </p>
+        </div>
+
+        <!-- Terminal Signature Card -->
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot dot-pink"></span>
+              <span class="terminal-dot dot-lavender"></span>
+              <span class="terminal-dot dot-sage"></span>
+            </div>
+            <span class="terminal-title">research_summary.exe</span>
+          </div>
+          <div class="terminal-body">
+            <p class="term-cmd">$ research.exe</p>
+            <p class="term-output" style="color: var(--rose-light); font-weight: 700;">Missing piece: FOUND</p>
+            <p class="term-output">Intentions: Pure</p>
+            <p class="term-output">Bugs: Still debugging</p>
+            <p class="term-output">Flowers: 100%</p>
+            <p class="term-output">Cats: Unlimited 🐱</p>
+            <p class="term-status" style="color: var(--lavender);">Status: Hoping for good things.</p>
+          </div>
+        </div>
+
+        <!-- Nav Controls & Restart -->
+        <div class="btn-row">
+          <button id="finalPrevBtn" class="secondary-button" aria-label="Back to research results">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+          </button>
+
+          <button id="restartAllBtn" class="cta-button" aria-label="Start the research again">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            <span>Start the research again ↻</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quiet Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <span>404 — Missing Piece Found · Made with care & flowers 🌸</span>
+        <div class="footer-stats">
+          <span>Cats: Unlimited 🐱</span>
+          <span aria-hidden="true">·</span>
+          <span>Bugs: 0 (hopefully)</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Pure Vanilla JavaScript -->
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
-
